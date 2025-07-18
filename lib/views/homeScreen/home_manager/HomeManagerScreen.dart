@@ -79,26 +79,27 @@ import '../../usersScreen/userlist/users_screen.dart';
 import '../home_screen.dart';
 import 'drawer/CustomDrawerManager.dart';
 import 'package:websuites/data/models/responseModels/customers/list/customers_list_response_model.dart'
-    as customerModel; // Alias for customer model
+as customerModel; // Alias for customer model
 import 'package:websuites/data/models/responseModels/products/activation_forms/ProductsActivationsFormsResModel.dart'
-    as productsActivations;
+as productsActivations;
 import 'package:websuites/data/models/responseModels/userList/activity/UserActivitiesResponseModel.dart'
-    as userActivities;
+as userActivities;
 
 import 'package:websuites/data/models/responseModels/sales/sales_response_model.dart'
-    as salesModel; // Alias for customer model
+as salesModel; // Alias for customer model
 import 'package:websuites/data/models/responseModels/tasks/list/tasks_list_response_model.dart'
-    as taskModel; // Alias for customer model
+as taskModel; // Alias for customer model
 
 import 'package:websuites/data/models/responseModels/customers/list/customer_detail_view/list/customer_list_detail_view_list_response_model.dart'
-    as detailModel;
+as detailModel;
+
 
 import 'package:websuites/data/models/responseModels/projects/list/projects_list_response_model.dart'
-    as projectModel; // project role
+as projectModel; // project role
 
 class HomeManagerController extends GetxController {
   final Rx<userActivities.Items?> selectedActivityItem =
-      Rx<userActivities.Items?>(null); // Changed to Items
+  Rx<userActivities.Items?>(null); // Changed to Items
   final RxBool showOrderDetails = false.obs;
   final RxString selectedPeriod = 'This month'.obs;
   final RxString selectedNav = 'Dashboard'.obs;
@@ -106,47 +107,46 @@ class HomeManagerController extends GetxController {
   final RxBool isLocalCollapsed = false.obs;
   final Rx<Item?> selectedOrderItem = Rx<Item?>(null);
   final Rx<customerModel.Item?> selectedCustomerItem =
-      Rx<customerModel.Item?>(null); // For customers
+  Rx<customerModel.Item?>(null); // For customers
   final Rx<productsActivations.ProductsActivationsFormsResModel?>
-      selectedProductsActivationsItem =
-      Rx<productsActivations.ProductsActivationsFormsResModel?>(null);
-  final Rx<projectModel.Item?> selectedProjectItem =
-      Rx<projectModel.Item?>(null);
+  selectedProductsActivationsItem =
+  Rx<productsActivations.ProductsActivationsFormsResModel?>(null);
+  final Rx<projectModel.Item?> selectedProjectItem = Rx<projectModel.Item?>(null);
 
-  final Rx<detailModel.CustomerListDetailViewListResponseModel?>
-      selectedCustomerDetail =
-      Rx<detailModel.CustomerListDetailViewListResponseModel?>(null);
+  final Rx<detailModel.CustomerListDetailViewListResponseModel?> selectedCustomerDetail = Rx<detailModel.CustomerListDetailViewListResponseModel?>(null);
   final Rx<salesModel.Item?> selectedSalesItem =
-      Rx<salesModel.Item?>(null); // For sales
+  Rx<salesModel.Item?>(null); // For sales
   final Rx<taskModel.Item?> selectedTaskItem =
-      Rx<taskModel.Item?>(null); // For sales
+  Rx<taskModel.Item?>(null); // For sales
 
   final Rx<Widget> lastScreen = Rx<Widget>(Container()); // Initial placeholder
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  final RolesResponseModel role = RolesResponseModel();
+  final RolesResponseModel role =
+  RolesResponseModel();
 
   @override
   void onInit() {
     super.onInit();
 
     lastScreen.value = HomeScreen(scaffoldKey: scaffoldKey);
+
   }
 
   Widget buildDrawer() {
     return Obx(() => Drawer(
-          backgroundColor: Theme.of(Get.context!).brightness == Brightness.dark
-              ? AllColors.darkModeGrey
-              : Colors.white,
-          width: isLocalCollapsed.value ? 100 : 300,
-          child: CustomDrawerManager(
-            onNavigation: (nav, subNav) {
-              updateNavigation(nav, subNav);
-            },
-            isLocalCollapsed: isLocalCollapsed.value,
-            onCollapseToggle: toggleCollapse,
-            scaffoldKey: scaffoldKey, // Pass scaffoldKey
-          ),
-        ));
+      backgroundColor: Theme.of(Get.context!).brightness == Brightness.dark
+          ? AllColors.darkModeGrey
+          : Colors.white,
+      width: isLocalCollapsed.value ? 100 : 300,
+      child: CustomDrawerManager(
+        onNavigation: (nav, subNav) {
+          updateNavigation(nav, subNav);
+        },
+        isLocalCollapsed: isLocalCollapsed.value,
+        onCollapseToggle: toggleCollapse,
+        scaffoldKey: scaffoldKey, // Pass scaffoldKey
+      ),
+    ));
   }
 
   void updateNavigation(String nav, String subNav) {
@@ -158,19 +158,25 @@ class HomeManagerController extends GetxController {
       selectedOrderItem.value = null;
     }
 
+
     if (!(nav == 'Projects' && subNav == 'List')) {
       showOrderDetails.value = false;
       selectedProjectItem.value = null;
     }
 
     switch (nav) {
+
+
       case 'Practice':
         lastScreen.value = CheckDemo();
         break;
 
+
       case 'Dashboard':
         lastScreen.value = HomeScreen(scaffoldKey: scaffoldKey);
         break;
+
+
 
       case 'Notifications':
         lastScreen.value = NotificationScreen(scaffoldKey: scaffoldKey);
@@ -261,9 +267,7 @@ class HomeManagerController extends GetxController {
       case 'Customer':
         switch (subNav) {
           case 'Create':
-            lastScreen.value = CustomerCreateScreen(
-              scaffoldKey: scaffoldKey,
-            );
+            lastScreen.value = CustomerCreateScreen(scaffoldKey: scaffoldKey,);
             break;
 
           case 'List':
@@ -283,8 +287,7 @@ class HomeManagerController extends GetxController {
                   );
                   update();
 
-                  final detailedCustomer = await viewModel
-                      .customerDetailViewList(Get.context!, customer.id);
+                  final detailedCustomer = await viewModel.customerDetailViewList(Get.context!, customer.id);
                   if (detailedCustomer != null) {
                     selectedCustomerDetail.value = detailedCustomer;
                     lastScreen.value = CustomerDetailsScreen(
@@ -294,19 +297,13 @@ class HomeManagerController extends GetxController {
                     );
                   } else {
                     Get.snackbar('Error', 'Failed to load customer details',
-                        snackPosition: SnackPosition.BOTTOM,
-                        backgroundColor: Colors.red,
-                        colorText: Colors.white);
-                    lastScreen.value =
-                        CustomersListScreen(scaffoldKey: scaffoldKey);
+                        snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red, colorText: Colors.white);
+                    lastScreen.value = CustomersListScreen(scaffoldKey: scaffoldKey);
                   }
                 } catch (e) {
                   Get.snackbar('Error', 'Failed to load customer details: $e',
-                      snackPosition: SnackPosition.BOTTOM,
-                      backgroundColor: Colors.red,
-                      colorText: Colors.white);
-                  lastScreen.value =
-                      CustomersListScreen(scaffoldKey: scaffoldKey);
+                      snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red, colorText: Colors.white);
+                  lastScreen.value = CustomersListScreen(scaffoldKey: scaffoldKey);
                 }
                 update();
               },
@@ -409,6 +406,11 @@ class HomeManagerController extends GetxController {
             lastScreen.value = SalesTargetScreen(scaffoldKey: scaffoldKey);
             break;
         }
+
+
+
+
+
 
       case 'Tasks':
         switch (subNav) {
@@ -563,7 +565,7 @@ class HomeManagerController extends GetxController {
               scaffoldKey: scaffoldKey,
               onOrderSelected:
                   (productsActivations.ProductsActivationsFormsResModel
-                      activationsForms) {
+              activationsForms) {
                 showOrderDetails.value = true;
                 selectedOrderItem.value = null; // Clear lead selection
                 selectedCustomerItem.value = null; // Clear customer selection
@@ -571,7 +573,7 @@ class HomeManagerController extends GetxController {
                     activationsForms; // Store the selected activation form
                 lastScreen.value = ProductsActivationsFormsDetails(
                   ActivationsId:
-                      activationsForms.id ?? '', // Ensure id is not null
+                  activationsForms.id ?? '', // Ensure id is not null
                   ActivationsData: activationsForms,
                   scaffoldKey: scaffoldKey,
                 );
@@ -658,7 +660,7 @@ class HomeManagerController extends GetxController {
                   latitude: double.tryParse(activity.lat ?? '0.0') ?? 0.0,
                   longitude: double.tryParse(activity.lng ?? '0.0') ?? 0.0,
                   username:
-                      '${activity.user?.firstName ?? ''} ${activity.user?.lastName ?? ''}',
+                  '${activity.user?.firstName ?? ''} ${activity.user?.lastName ?? ''}',
                 );
                 update();
               },
@@ -783,17 +785,14 @@ class HomeManagerController extends GetxController {
     selectedCustomerItem.value = null; // Clear selected customer
     selectedCustomerDetail.value = null; // Clear detailed customer data
 
-    if (selectedNav.value == 'Customer' &&
-        selectedSubNav.value == 'List' &&
-        selectedCustomerItem.value != null) {
+    if (selectedNav.value == 'Customer' && selectedSubNav.value == 'List' && selectedCustomerItem.value != null) {
       showOrderDetails.value = true;
       lastScreen.value = CustomerDetailsScreen(
         customerId: selectedCustomerItem.value!.id ?? '',
         customerData: selectedCustomerDetail.value, // Use cached detailed data
         scaffoldKey: scaffoldKey,
       );
-    } else if (selectedNav.value == 'Customer' &&
-        selectedSubNav.value == 'List') {
+    } else if (selectedNav.value == 'Customer' && selectedSubNav.value == 'List') {
       lastScreen.value = CustomersListScreen(
         scaffoldKey: scaffoldKey,
         onOrderSelected: (customerModel.Item customer) async {
@@ -805,40 +804,34 @@ class HomeManagerController extends GetxController {
           try {
             lastScreen.value = CustomerDetailsScreen(
               customerId: customer.id,
-              customerData:
-                  selectedCustomerDetail.value, // Use cached data if available
+              customerData: selectedCustomerDetail.value, // Use cached data if available
               scaffoldKey: scaffoldKey,
             );
             update();
 
-            if (selectedCustomerDetail.value == null ||
-                selectedCustomerDetail.value!.id != customer.id) {
-              final detailedCustomer = await viewModel.customerDetailViewList(
-                  Get.context!, customer.id);
+            if (selectedCustomerDetail.value == null || selectedCustomerDetail.value!.id != customer.id) {
+              final detailedCustomer = await viewModel.customerDetailViewList(Get.context!, customer.id);
               if (detailedCustomer != null) {
-                selectedCustomerDetail.value =
-                    detailedCustomer; // Cache the detailed data
+                selectedCustomerDetail.value = detailedCustomer; // Cache the detailed data
                 lastScreen.value = CustomerDetailsScreen(
                   customerId: customer.id,
                   customerData: detailedCustomer,
                   scaffoldKey: scaffoldKey,
                 );
               } else {
-                lastScreen.value =
-                    CustomersListScreen(scaffoldKey: scaffoldKey);
+
+                lastScreen.value = CustomersListScreen(scaffoldKey: scaffoldKey);
               }
             }
           } catch (e) {
             Get.snackbar('Error', 'Failed to load customer details: $e',
-                snackPosition: SnackPosition.BOTTOM,
-                backgroundColor: Colors.red,
-                colorText: Colors.white);
+                snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.red, colorText: Colors.white);
             lastScreen.value = CustomersListScreen(scaffoldKey: scaffoldKey);
           }
           update();
         },
       );
-    } else {
+    }else {
       // Handle other cases (Leads, Sales, Projects, etc.)
       if (selectedNav.value == 'Leads' && selectedSubNav.value == 'List') {
         lastScreen.value = LeadListScreen(
@@ -860,8 +853,7 @@ class HomeManagerController extends GetxController {
             update();
           },
         );
-      } else if (selectedNav.value == 'Sales' &&
-          selectedSubNav.value == 'Target') {
+      } else if (selectedNav.value == 'Sales' && selectedSubNav.value == 'Target') {
         lastScreen.value = SalesTargetScreen(
           scaffoldKey: scaffoldKey,
           onOrderSelected: (salesModel.Item sales) {
@@ -876,12 +868,10 @@ class HomeManagerController extends GetxController {
             update();
           },
         );
-      } else if (selectedNav.value == 'Products' &&
-          selectedSubNav.value == 'Activations Forms') {
+      } else if (selectedNav.value == 'Products' && selectedSubNav.value == 'Activations Forms') {
         lastScreen.value = ProductsActivationsForms(
           scaffoldKey: scaffoldKey,
-          onOrderSelected: (productsActivations.ProductsActivationsFormsResModel
-              activationsForms) {
+          onOrderSelected: (productsActivations.ProductsActivationsFormsResModel activationsForms) {
             showOrderDetails.value = true;
             selectedOrderItem.value = null;
             selectedCustomerItem.value = null;
@@ -894,8 +884,7 @@ class HomeManagerController extends GetxController {
             update();
           },
         );
-      } else if (selectedNav.value == 'Projects' &&
-          selectedSubNav.value == 'List') {
+      } else if (selectedNav.value == 'Projects' && selectedSubNav.value == 'List') {
         lastScreen.value = ProjectListScreen(
           scaffoldKey: scaffoldKey,
           onOrderSelected: (projectModel.Item project) {
@@ -908,8 +897,7 @@ class HomeManagerController extends GetxController {
             update();
           },
         );
-      } else if (selectedNav.value == 'Users' &&
-          selectedSubNav.value == 'Activities') {
+      } else if (selectedNav.value == 'Users' && selectedSubNav.value == 'Activities') {
         lastScreen.value = UserActivityScreen(
           scaffoldKey: scaffoldKey,
           onOrderSelected: (userActivities.Items activity) {
@@ -918,14 +906,12 @@ class HomeManagerController extends GetxController {
             lastScreen.value = MapScreen(
               latitude: double.tryParse(activity.lat ?? '0.0') ?? 0.0,
               longitude: double.tryParse(activity.lng ?? '0.0') ?? 0.0,
-              username:
-                  '${activity.user?.firstName ?? ''} ${activity.user?.lastName ?? ''}',
+              username: '${activity.user?.firstName ?? ''} ${activity.user?.lastName ?? ''}',
             );
             update();
           },
         );
-      } else if (selectedNav.value == 'Tasks' &&
-          selectedSubNav.value == 'List') {
+      } else if (selectedNav.value == 'Tasks' && selectedSubNav.value == 'List') {
         lastScreen.value = TaskListScreen(
           scaffoldKey: scaffoldKey,
           onOrderSelected: (taskModel.Item task) {
@@ -963,7 +949,7 @@ class HomeManagerController extends GetxController {
           },
         );
       } else {
-        lastScreen.value = HomeScreen(scaffoldKey: scaffoldKey);
+        lastScreen.value =  HomeScreen(scaffoldKey: scaffoldKey);
       }
     }
 
@@ -984,50 +970,39 @@ class HomeManagerScreen extends GetView<HomeManagerController> {
     final controller = Get.put(HomeManagerController());
     final bool isMobile = MediaQuery.of(context).size.width < 600;
 
-    return WillPopScope(
-      onWillPop: () async {
-        // Custom back logic
-        // Example: If not on home, go to home instead of closing app
-        if (controller.selectedNav.value != 'Dashboard') {
-          controller.updateNavigation('Dashboard', '');
-          return false; // Prevent default pop (app close)
-        }
-        return true; // Allow app to close if already on home
-      },
-      child: Scaffold(
-        key: controller.scaffoldKey,
-        backgroundColor: AllColors.backgroundGreyWhite,
-        drawer: isMobile ? controller.buildDrawer() : null,
-        body: Row(
-          children: [
-            if (!isMobile)
-              Obx(() => Container(
-                    width: controller.isLocalCollapsed.value ? 97 : 250,
-                    height: MediaQuery.of(context).size.height,
-                    decoration: BoxDecoration(
-                      color: DarkMode.backgroundColor(context),
-                      border: Border(
-                        right: BorderSide(
-                            color:
-                                Theme.of(context).brightness == Brightness.dark
-                                    ? Colors.grey[800]!
-                                    : Colors.grey[200]!),
-                      ),
-                    ),
-                    child: CustomDrawerManager(
-                      onNavigation: (nav, subNav) {
-                        controller.updateNavigation(nav, subNav);
-                      },
-                      isLocalCollapsed: controller.isLocalCollapsed.value,
-                      onCollapseToggle: controller.toggleCollapse,
-                      scaffoldKey: controller.scaffoldKey, // Pass scaffoldKey,
-                    ),
-                  )),
-            Expanded(
-              child: Obx(() => controller.lastScreen.value),
-            ),
-          ],
-        ),
+    return Scaffold(
+      key: controller.scaffoldKey,
+      backgroundColor: AllColors.backgroundGreyWhite,
+      drawer: isMobile ? controller.buildDrawer() : null,
+      body: Row(
+        children: [
+          if (!isMobile)
+            Obx(() => Container(
+              width: controller.isLocalCollapsed.value ? 97 : 250,
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                color: DarkMode.backgroundColor(context),
+                border: Border(
+                  right: BorderSide(color: Theme
+                      .of(context)
+                      .brightness == Brightness.dark
+                      ? Colors.grey[800]!
+                      : Colors.grey[200]!),
+                ),
+              ),
+              child:
+              CustomDrawerManager(
+                onNavigation: (nav, subNav) {
+                  controller.updateNavigation(nav, subNav);
+                },
+                isLocalCollapsed: controller.isLocalCollapsed.value,
+                onCollapseToggle: controller.toggleCollapse, scaffoldKey: controller.scaffoldKey, // Pass scaffoldKey,
+              ),
+            )),
+          Expanded(
+            child: Obx(() => controller.lastScreen.value),
+          ),
+        ],
       ),
     );
   }

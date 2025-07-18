@@ -1,0 +1,2 @@
+/Users/appdevelopment/Downloads/websuites-main 2/android/app/.cxx/Debug/48272i1r/x86/CMakeFiles/edit_cache.dir
+/Users/appdevelopment/Downloads/websuites-main 2/android/app/.cxx/Debug/48272i1r/x86/CMakeFiles/rebuild_cache.dir
